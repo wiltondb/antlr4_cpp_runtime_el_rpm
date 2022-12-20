@@ -10,8 +10,8 @@ Source0: antlr4-%{version}.tar.gz
 %global source0_url https://src.fedoraproject.org/repo/pkgs/antlr4-project/antlr4-%{version}.tar.gz/sha512/%{source0_sha512}/antlr4-%{version}.tar.gz
 Patch1: antlr4-disable-pkgconfig.patch 
 
-BuildRequires: cmake
-BuildRequires: gcc-c++
+BuildRequires: cmake3
+BuildRequires: devtoolset-9-gcc-c++
 BuildRequires: make
 BuildRequires: utf8cpp-devel
 BuildRequires: uuid-devel
@@ -49,20 +49,22 @@ fi
 
 %build
 
+. /opt/rh/devtoolset-9/enable
+
 # Build the C++ runtime
 cd runtime/Cpp
-%cmake \
+%cmake3 \
     -DANTLR4_INSTALL=ON \
     -DCMAKE_BUILD_TYPE=RelWithDebInfo \
-    -DCMAKE_CXX_STANDARD=11
-%cmake_build
+    -DCMAKE_CXX_STANDARD=14
+%cmake3_build
 cd -
 
 %install
 
 # Install the C++ runtime
 cd runtime/Cpp
-%cmake_install
+%cmake3_install
 rm -f %{buildroot}%{_libdir}/libantlr4-runtime.a
 cd -
 
