@@ -1,6 +1,6 @@
 Name: antlr4-cpp-runtime
 Version: 4.9.3
-Release: 1%{?dist}
+Release: 3%{?dist}
 Summary: Parser generator (ANother Tool for Language Recognition) runtime for C++
 
 License: BSD
@@ -80,6 +80,6 @@ rm -fr %{buildroot}%{_docdir}/libantlr4
 %{_libdir}/cmake/antlr4-runtime/
 
 %changelog
-* Tue Dec 20 2022 Alex Kasko <alex@staticlibs@gmail.com> - 4.9.3-1
+* Tue Dec 20 2022 Alex Kasko <alex@staticlibs@gmail.com> - 4.9.3-3
 - Adapt the C++ runtime part from ttps://src.fedoraproject.org/rpms/antlr4-project
 
