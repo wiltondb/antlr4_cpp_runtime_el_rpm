@@ -52,7 +52,10 @@ fi
 
 # Build the C++ runtime
 cd runtime/Cpp
-%cmake -DANTLR4_INSTALL=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo
+%cmake \
+    -DANTLR4_INSTALL=ON \
+    -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+    -DCMAKE_CXX_STANDARD=14
 %cmake_build
 cd -
 
