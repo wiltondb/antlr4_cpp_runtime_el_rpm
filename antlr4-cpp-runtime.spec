@@ -1,6 +1,6 @@
 Name: antlr4-cpp-runtime
 Version: 4.9.3
-Release: 4%{?dist}
+Release: 5%{?dist}
 Summary: Parser generator (ANother Tool for Language Recognition) runtime for C++
 
 License: BSD
@@ -10,8 +10,14 @@ Source0: antlr4-%{version}.tar.gz
 %global source0_url https://src.fedoraproject.org/repo/pkgs/antlr4-project/antlr4-%{version}.tar.gz/sha512/%{source0_sha512}/antlr4-%{version}.tar.gz
 Patch1: antlr4-disable-pkgconfig.patch 
 
-BuildRequires: cmake3
-BuildRequires: devtoolset-8-gcc-c++
+%if 0%{?el7}
+%global cmake %cmake3
+%global cmake_build %cmake3_build
+%global cmake_install %cmake3_install
+%endif
+
+BuildRequires: cmake%{?el7:3}
+BuildRequires: %{?el7:devtoolset-8-}gcc-c++
 BuildRequires: make
 BuildRequires: utf8cpp-devel
 BuildRequires: uuid-devel
@@ -48,23 +54,21 @@ if [ "%{_lib}" != "lib" ]; then
 fi
 
 %build
-
-. /opt/rh/devtoolset-8/enable
-
+%{?el7:. /opt/rh/devtoolset-8/enable}
 # Build the C++ runtime
 cd runtime/Cpp
-%cmake3 \
+%cmake \
     -DANTLR4_INSTALL=ON \
     -DCMAKE_BUILD_TYPE=RelWithDebInfo \
     -DCMAKE_CXX_STANDARD=14
-%cmake3_build
+%cmake_build
 cd -
 
 %install
 
 # Install the C++ runtime
 cd runtime/Cpp
-%cmake3_install
+%cmake_install
 rm -f %{buildroot}%{_libdir}/libantlr4-runtime.a
 cd -
 
@@ -84,9 +88,11 @@ rm -fr %{buildroot}%{_docdir}/libantlr4
 %{_libdir}/cmake/antlr4-runtime/
 
 %changelog
+* Fri Dec 23 2022 Alex Kasko <alex@staticlibs.net - 4.9.3-5
+- Use macros to have the same spec for el 7, 8 and 9
+
 * Wed Dec 21 2022 Alex Kasko <alex@staticlibs.net - 4.9.3-4
 - Use devtoolset-8 instead of 9
 
 * Tue Dec 20 2022 Alex Kasko <alex@staticlibs.net> - 4.9.3-3
 - Adapt the C++ runtime part from ttps://src.fedoraproject.org/rpms/antlr4-project
-
